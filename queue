@@ -1,0 +1,139 @@
+#include <stdio.h>
+#include <string.h>
+#define SIZE 5   // maximum queue size
+
+char events[SIZE][50];  
+int f = -1; // front
+int r = -1; // rear
+
+// Add an event to the queue
+void addevent() {
+    if (r == SIZE - 1) {
+        printf("The queue is full\n");
+    } else {
+        char name[50];
+        printf("Enter event name: ");
+        scanf(" %[^\n]", name); // read event name with spaces
+
+        if (f == -1) {  
+            f = r = 0; // first element
+        } else {
+            r++;
+        }
+        strcpy(events[r], name);  // copy string into queue
+        printf("Event added: %s\n", events[r]);
+    }
+}
+
+// Delete an event from the queue (front)
+void deleteevent() {
+    if (f == -1) {
+        printf("The queue is empty\n");
+    } else {
+        printf("Event deleted: %s\n", events[f]);
+        if (f == r) { // last element removed
+            f = r = -1;
+        } else {
+            f++;
+        }
+    }
+}
+
+// Cancel a specific event by name
+void cancelevent() {
+    if (f == -1) {
+        printf("The queue is empty\n");
+        return;
+    }
+    
+    char name[50];
+    printf("Enter event name to cancel: ");
+    scanf(" %[^\n]", name);
+
+    int found = -1;
+    for (int i = f; i <= r; i++) {
+        if (strcmp(events[i], name) == 0) {
+            found = i;
+            break;
+        }
+    }
+
+    if (found == -1) {
+        printf("Event not found: %s\n", name);
+    } else {
+        printf("Event cancelled: %s\n", events[found]);
+        // Shift all elements after found one step to the left
+        for (int i = found; i < r; i++) {
+            strcpy(events[i], events[i + 1]);
+        }
+        r--;
+
+        // If queue is now empty after removal
+        if (r < f) {
+            f = r = -1;
+        }
+    }
+}
+
+// Display all events in queue
+void display() {
+    if (f == -1) {
+        printf("The queue is empty\n");
+    } else {
+        printf("Events in queue:\n");
+        for (int i = f; i <= r; i++) {
+            printf("%s\n", events[i]);
+        }
+    }
+}
+
+int main() {
+    int choice;
+    do {
+        printf("\n--- Event Queue Menu ---\n");
+        printf("1. Add Event\n");
+        printf("2. Delete Event\n");
+        printf("3. Display Events\n");
+        printf("4. Cancel Event\n");
+        printf("5. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1: addevent(); break;
+            case 2: deleteevent(); break;
+            case 3: display(); break;
+            case 4: cancelevent(); break;
+            case 5: printf("Exiting program...\n"); break;
+            default: printf("Invalid choice! Try again.\n");
+        }
+    } while (choice != 5);
+
+    return 0;
+}
+
+Queue.c
+Displaying Queue.c.
+Practical 3 Queue
+Poonam Deokar
+•
+8 Aug (Edited 11 Aug)
+10 points
+Due 17 Aug
+Implement a real-time event processing system using
+a Queue data structure. The system
+should support the following features:
+• Add an Event: When a new event occurs, it should
+be added to the event queue.
+• Process the Next Event: The system should process
+and remove the event that has
+been in the queue the longest.
+• Display Pending Events: Show all the events
+currently waiting to be processed.
+• Cancel an Event: An event can be canceled if it has
+not been processed.
+
+QueueWriteup (1).doc
+Microsoft Word
+Class comments
+Your
