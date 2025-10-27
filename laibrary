@@ -1,0 +1,40 @@
+lib = {
+    "student1": ["DS"],
+    "student2": [],
+    "student3": ["oop", "OS", "DS", "ED"],
+    "student4": ["DS", "OS", "oop"]
+}
+print(lib)
+
+# 1. Average number of books borrowed
+total = 0
+for student in lib:
+    total += len(lib[student])
+average = total / len(lib)
+print("Average books per student:", average)
+
+# 2. Students with zero borrowed books
+zero_count = 0
+for student in lib:
+    if len(lib[student]) == 0:
+        print(student, "has borrowed 0 books")
+        zero_count += 1
+print("Total students with 0 books:", zero_count)
+
+# 3. Book with highest and lowest borrowings
+book_count = {}
+for books in lib.values():
+    for book in books:
+        book_count[book] = book_count.get(book, 0) + 1
+
+max_borrow = max(book_count.values())
+min_borrow = min(book_count.values())
+
+most_borrowed = [book for book in book_count if book_count[book] == max_borrow]
+least_borrowed = [book for book in book_count if book_count[book] == min_borrow]
+
+print("Most borrowed book(s):", most_borrowed)
+print("Least borrowed book(s):", least_borrowed)
+
+# 4. Mode of borrow counts (most frequent book)
+print("Mode of borrowed books:", most_borrowed)
