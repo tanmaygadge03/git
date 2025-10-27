@@ -1,0 +1,54 @@
+salaries = [25000.0, 35000.0, 30000.0, 55000.0, 28000.0, 64000.0, 87000.0,44000.0]
+
+def selection_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        min_index = i
+        for j in range(i+1, n):
+            if arr[j] < arr[min_index]:
+                min_index = j
+        
+        arr[i], arr[min_index] = arr[min_index], arr[i]
+    return arr
+
+	
+def print_top_5_salaries(arr):
+    
+    top_5 = arr[-5:] if len(arr) >= 5 else arr
+    print("Top 5 salaries  :")
+    for salary in reversed(top_5):
+        print(salary)
+        
+sorted_salaries_selection = selection_sort(salaries.copy())
+
+print("Sorted salaries :", sorted_salaries_selection)
+print_top_5_salaries(sorted_salaries_selection)
+
+print("\n")
+
+
+
+salaries = [54377.0, 44567.0, 67900.0, 24646.0, 44324.0,77000.0]
+
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        for j in range(0, n - i - 1):
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+    return arr
+    
+def print_top_5_salaries(arr):
+    
+    top_5 = arr[-5:] if len(arr) >= 5 else arr
+    print("Top 5 salaries  :")
+    for salary in reversed(top_5):
+        print(salary)
+        
+sorted_salaries_bubble = bubble_sort(salaries.copy())
+
+print("Sorted salaries :", sorted_salaries_bubble)
+print_top_5_salaries(sorted_salaries_bubble)
+
+print("\n")
+
