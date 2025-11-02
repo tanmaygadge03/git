@@ -1,0 +1,45 @@
+class TextEditor:
+    def __init__(self):
+        self.document = ""           # Current document state
+        self.undo_stack = []         # Stack for undo
+        self.redo_stack = []         # Stack for redo
+
+    def make_change(self, new_text):
+        self.undo_stack.append(self.document)  # Save current state before change
+        self.document = new_text               # Apply new change
+        self.redo_stack.clear()                # Clear redo history
+
+    def undo(self):
+        if self.undo_stack:
+            self.redo_stack.append(self.document)      # Save current state for redo
+            self.document = self.undo_stack.pop()      # Revert to previous state
+        else:
+            print("Nothing to undo.")
+
+    def redo(self):
+        if self.redo_stack:
+            self.undo_stack.append(self.document)      # Save current state for undo
+            self.document = self.redo_stack.pop()      # Reapply last undone state
+        else:
+            print("Nothing to redo.")
+
+    def display(self):
+        print("Current Document State:", self.document)
+
+# Example usage
+editor = TextEditor()
+
+# Simulating user actions
+editor.make_change("Hello")
+editor.make_change("Hello, World!")
+editor.make_change("Hello, World! This is a test.")
+editor.display()
+
+editor.undo()
+editor.display()
+
+editor.undo()
+editor.display()
+
+editor.redo()
+editor.display()
