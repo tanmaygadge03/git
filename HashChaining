@@ -1,0 +1,63 @@
+size = 10
+hash_table = [[] for _ in range(size)]
+
+def hash_function(key):
+    return key % size
+
+def Insert():
+    key = int(input("Enter key: "))
+    value = input("Enter value: ")
+    index = hash_function(key)
+
+    for pair in hash_table[index]:
+        if pair[0] == key:
+            pair[1] = value
+            print("Key exists. Value updated.")
+            return
+
+    hash_table[index].append([key, value])
+    print(f"Inserted at index {index}.")
+
+def Search():
+    key = int(input("Enter key to search: "))
+    index = hash_function(key)
+
+    for pair in hash_table[index]:
+        if pair[0] == key:
+            print(f"Found: {pair[1]}")
+            return
+    print("Key not found.")
+
+def Delete():
+    key = int(input("Enter key to delete: "))
+    index = hash_function(key)
+
+    for pair in hash_table[index]:
+        if pair[0] == key:
+            hash_table[index].remove(pair)
+            print("Key deleted.")
+            return
+    print("Key not found.")
+
+def Display():
+    print("\n--- Hash Table ---")
+    for i in range(size):
+        print(f"{i}: {hash_table[i]}")
+    print("------------------\n")
+
+while True:
+    print("1. Insert\n2. Search\n3. Delete\n4. Display\n5. Exit")
+    choice = int(input("Choice: "))
+    if choice == 1:
+        Insert()
+    elif choice == 2:
+        Search()
+    elif choice == 3:
+        Delete()
+    elif choice == 4:
+        Display()
+    elif choice == 5:
+        print("Exited.")
+        break
+    else:
+        print("Invalid choice.")
