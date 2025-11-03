@@ -1,0 +1,58 @@
+size = int(input("Enter size of hash table: "))
+hash_table = ["Empty"] * size
+
+def hash_function(key):
+    return key % size
+
+def Insert():
+    key = int(input("Enter key to insert: "))
+    index = hash_function(key)
+    for i in range(size):
+        if hash_table[index] == "Empty":
+            hash_table[index] = key
+            print(f"Inserted {key} at index {index}")
+            return
+        index = (index + 1) % size
+    print("Hash table is full!")
+
+def Search():
+    key = int(input("Enter key to search: "))
+    index = hash_function(key)
+    for i in range(size):
+        if hash_table[index] == key:
+            print(f"Found {key} at index {index}")
+            return
+        elif hash_table[index] == "Empty":
+            break
+        index = (index + 1) % size
+    print("Key not found.")
+
+def Delete():
+    key = int(input("Enter key to delete: "))
+    index = hash_function(key)
+    for i in range(size):
+        if hash_table[index] == key:
+            hash_table[index] = "Empty"
+            print(f"Deleted {key} from index {index}")
+            return
+        elif hash_table[index] == "Empty":
+            break
+        index = (index + 1) % size
+    print("Key not found.")
+
+def Display():
+    print("\n--- Hash Table ---")
+    for i in range(size):
+        print(f"{i}: {hash_table[i]}")
+    print("------------------\n")
+
+while True:
+    print("1. Insert\n2. Search\n3. Delete\n4. Display\n5. Exit")
+    ch = int(input("Choice: "))
+    match ch:
+        case 1: Insert()
+        case 2: Search()
+        case 3: Delete()
+        case 4: Display()
+        case 5: print("Exited."); break
+        case _: print("Invalid choice.")
