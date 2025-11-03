@@ -1,0 +1,79 @@
+#include <stdio.h>
+#include <string.h>
+#define MAX 100
+
+char queue[MAX][50];
+int front = 0, rear = -1;
+
+void addEvent() {
+    if (rear == MAX - 1) {
+        printf("Queue full.\n");
+        return;
+    }
+    rear++;
+    printf("Enter event name: ");
+    scanf("%s", queue[rear]);
+    printf("Added: %s\n", queue[rear]);
+}
+
+void processEvent() {
+    if (front > rear) {
+        printf("No events.\n");
+        return;
+    }
+    printf("Processed: %s\n", queue[front]);
+    front++;
+}
+
+void showEvents() {
+    if (front > rear) {
+        printf("No pending events.\n");
+        return;
+    }
+    printf("Pending events:\n");
+    for (int i = front; i <= rear; i++)
+        printf("%s\n", queue[i]);
+}
+
+void cancelEvent() {
+    if (front > rear) {
+        printf("No events to cancel.\n");
+        return;
+    }
+    char name[50];
+    printf("Enter event to cancel: ");
+    scanf("%s", name);
+
+    int found = -1;
+    for (int i = front; i <= rear; i++) {
+        if (strcmp(queue[i], name) == 0) {
+            found = i;
+            break;
+        }
+    }
+
+    if (found == -1) {
+        printf("Event not found.\n");
+        return;
+    }
+
+    for (int i = found; i < rear; i++)
+        strcpy(queue[i], queue[i + 1]);
+    rear--;
+    printf("Canceled: %s\n", name);
+}
+
+int main() {
+    int choice;
+    while (1) {
+        printf("\n1.Add 2.Process 3.Show 4.Cancel 5.Exit\nChoice: ");
+        scanf("%d", &choice);
+        if (choice == 1) addEvent();
+        else if (choice == 2) processEvent();
+        else if (choice == 3) showEvents();
+        else if (choice == 4) cancelEvent();
+        else if (choice == 5) break;
+        else printf("Invalid.\n");
+    }
+    return 0;
+}
