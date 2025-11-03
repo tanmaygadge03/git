@@ -1,0 +1,154 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int roll;
+    string name;
+    float marks;
+    Node* next;
+    Node* prev;
+};
+
+class StudentList {
+    Node* head;
+public:
+    StudentList() { head = nullptr; }
+
+    void addStudent() {
+        Node* newNode = new Node;
+        cout << "Enter Roll No: "; cin >> newNode->roll;
+        cout << "Enter Name: "; cin >> newNode->name;
+        cout << "Enter Marks: "; cin >> newNode->marks;
+        newNode->next = nullptr;
+        newNode->prev = nullptr;
+
+        if (head == nullptr)
+            head = newNode;
+        else {
+            Node* temp = head;
+            while (temp->next != nullptr)
+                temp = temp->next;
+            temp->next = newNode;
+            newNode->prev = temp;
+        }
+        cout << "Student added.\n";
+    }
+
+    void display() {
+        if (head == nullptr) {
+            cout << "No records.\n";
+            return;
+        }
+        cout << "\nRoll\tName\tMarks\n";
+        Node* temp = head;
+        while (temp != nullptr) {
+            cout << temp->roll << "\t" << temp->name << "\t" << temp->marks << "\n";
+            temp = temp->next;
+        }
+    }
+
+    void deleteStudent() {
+        int roll;
+        cout << "Enter Roll No to delete: "; cin >> roll;
+        Node* temp = head;
+        while (temp != nullptr && temp->roll != roll)
+            temp = temp->next;
+        if (temp == nullptr) {
+            cout << "Not found.\n";
+            return;
+        }
+        if (temp->prev != nullptr)
+            temp->prev->next = temp->next;
+        else
+            head = temp->next;
+        if (temp->next != nullptr)
+            temp->next->prev = temp->prev;
+        delete temp;
+        cout << "Deleted.\n";
+    }
+
+    void updateStudent() {
+        int roll;
+        cout << "Enter Roll No to update: "; cin >> roll;
+        Node* temp = head;
+        while (temp != nullptr && temp->roll != roll)
+            temp = temp->next;
+        if (temp == nullptr) {
+            cout << "Not found.\n";
+            return;
+        }
+        cout << "Enter new name: "; cin >> temp->name;
+        cout << "Enter new marks: "; cin >> temp->marks;
+        cout << "Updated.\n";
+    }
+
+    void searchStudent() {
+        int roll;
+        cout << "Enter Roll No to search: "; cin >> roll;
+        Node* temp = head;
+        while (temp != nullptr) {
+            if (temp->roll == roll) {
+                cout << "Found: " << temp->name << ", Marks: " << temp->marks << "\n";
+                return;
+            }
+            temp = temp->next;
+        }
+        cout << "Not found.\n";
+    }
+
+    void sortRecords(int order, int by) {
+        if (head == nullptr) return;
+        bool swapped;
+        Node* ptr;
+        Node* last = nullptr;
+
+        do {
+            swapped = false;
+            ptr = head;
+            while (ptr->next != last) {
+                bool cond = false;
+                if (by == 1)
+                    cond = (order == 1) ? (ptr->roll > ptr->next->roll) : (ptr->roll < ptr->next->roll);
+                else
+                    cond = (order == 1) ? (ptr->marks > ptr->next->marks) : (ptr->marks < ptr->next->marks);
+
+                if (cond) {
+                    swap(ptr->roll, ptr->next->roll);
+                    swap(ptr->name, ptr->next->name);
+                    swap(ptr->marks, ptr->next->marks);
+                    swapped = true;
+                }
+                ptr = ptr->next;
+            }
+            last = ptr;
+        } while (swapped);
+    }
+};
+
+int main() {
+    StudentList sl;
+    int ch;
+    do {
+        cout << "\n--- Student Menu ---\n";
+        cout << "1. Add\n2. Display\n3. Delete\n4. Update\n5. Search\n6. Sort\n7. Exit\nChoice: ";
+        cin >> ch;
+        switch (ch) {
+            case 1: sl.addStudent(); break;
+            case 2: sl.display(); break;
+            case 3: sl.deleteStudent(); break;
+            case 4: sl.updateStudent(); break;
+            case 5: sl.searchStudent(); break;
+            case 6: {
+                int order, by;
+                cout << "Sort by: 1.Roll 2.Marks: "; cin >> by;
+                cout << "Order: 1.Asc 2.Desc: "; cin >> order;
+                sl.sortRecords(order, by);
+                sl.display();
+                break;
+            }
+            case 7: cout << "Goodbye!\n"; break;
+            default: cout << "Invalid.\n";
+        }
+    } while (ch != 7);
+    return 0;
+}
