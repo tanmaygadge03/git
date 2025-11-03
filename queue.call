@@ -1,0 +1,59 @@
+class Queue:
+    def __init__(self):
+        self.arr = [0] * 10
+        self.f = -1
+        self.r = -1
+
+    def isEmpty(self):
+        return self.f == -1 or self.f > self.r
+
+    def isFull(self):
+        return self.r == 9
+
+    def add_call(self):
+        if self.isFull():
+            print("Queue Overflow")
+            return
+        if self.isEmpty():
+            self.f = 0
+        customer_id = input("Customer ID: ")
+        call_time = input("Call Time: ")
+        self.r += 1
+        self.arr[self.r] = [customer_id, call_time]
+        print("Call added")
+
+    def answer_call(self):
+        if self.isEmpty():
+            print("All calls answered")
+        else:
+            print("Answered:", self.arr[self.f])
+            self.f += 1
+            if self.f > self.r:
+                self.f = self.r = -1
+
+    def display(self):
+        if self.isEmpty():
+            print("Queue is empty")
+        else:
+            for i in range(self.f, self.r + 1):
+                print(self.arr[i])
+
+# Main menu
+q = Queue()
+while True:
+    print("\n1. Add Call\n2. Answer Call\n3. View Queue\n4. Is Empty?\n5. Exit")
+    ch = int(input("Choice: "))
+    if ch == 1:
+        q.add_call()
+    elif ch == 2:
+        q.answer_call()
+    elif ch == 3:
+        q.display()
+    elif ch == 4:
+        print("Empty" if q.isEmpty() else "Not Empty")
+    elif ch == 5:
+        print("Thank you")
+        break
+    else:
+        print("Invalid choice")
+        
