@@ -1,0 +1,38 @@
+account_id = [10, 20, 30, 40, 50]
+
+target_id = int(input("Enter the ID to search: "))
+
+class Search:
+
+    @staticmethod
+    def linear_search(lst, id_to_find):
+        for i in range(len(lst)):
+            if lst[i] == id_to_find:
+                print(f"ID {id_to_find} is found at index {i} using Linear Search")
+                return
+        print(f"ID {id_to_find} is NOT found using Linear Search")
+
+    @staticmethod
+    def binary_search(lst, id_to_find):
+        low = 0
+        high = len(lst) - 1
+
+        while low <= high:
+            mid = (low + high) // 2
+            if lst[mid] == id_to_find:
+                print(f"ID {id_to_find} is found at index {mid} using Binary Search")
+                return
+            elif id_to_find < lst[mid]:
+                high = mid - 1
+            else:
+                low = mid + 1
+
+        print(f"ID {id_to_find} is NOT found using Binary Search")
+
+
+# Create object of the class
+obj = Search()
+
+# Call both methods
+obj.linear_search(account_id, target_id)
+obj.binary_search(account_id, target_id)
