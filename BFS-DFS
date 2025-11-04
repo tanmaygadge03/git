@@ -1,0 +1,96 @@
+#include <iostream>
+#include <queue>
+using namespace std;
+
+// ---------- DFS using Adjacency Matrix ----------
+void DFS(int n, int matrix[10][10], int node, int visited[]) {
+    cout << char(node + 'A') << " ";
+    visited[node] = 1;
+
+    for (int i = 0; i < n; i++) {
+        if (matrix[node][i] == 1 && visited[i] == 0) {
+            DFS(n, matrix, i, visited);
+        }
+    }
+}
+
+// ---------- BFS using Adjacency List ----------
+void BFS(int n, int list[10][10], int size[10], int start) {
+    int visited[10] = {0};
+    queue<int> q;
+
+    visited[start] = 1;
+    q.push(start);
+
+    while (!q.empty()) {
+        int current = q.front();
+        q.pop();
+        cout << char(current + 'A') << " ";
+
+        for (int i = 0; i < size[current]; i++) {
+            int next = list[current][i];
+            if (!visited[next]) {
+                visited[next] = 1;
+                q.push(next);
+            }
+        }
+    }
+}
+
+int main() {
+    int n, edges;
+    cout << "Enter number of locations: ";
+    cin >> n;
+    cout << "Enter number of connections: ";
+    cin >> edges;
+
+    int matrix[10][10] = {0};   // For DFS
+    int list[10][10];           // For BFS
+    int size[10] = {0};         // Number of neighbors
+
+    cout << "Enter connections (e.g., A B):\n";
+    for (int i = 0; i < edges; i++) {
+        char a, b;
+        cin >> a >> b;
+        int u = a - 'A';
+        int v = b - 'A';
+
+        matrix[u][v] = 1;
+        matrix[v][u] = 1;
+    }
+
+    // Convert matrix to list
+    for (int i = 0; i < n; i++) {
+        size[i] = 0;
+        for (int j = 0; j < n; j++) {
+            if (matrix[i][j] == 1) {
+                list[i][size[i]++] = j;
+            }
+        }
+    }
+
+    // Show adjacency list
+    cout << "\nAdjacency List:\n";
+    for (int i = 0; i < n; i++) {
+        cout << char(i + 'A') << " -> ";
+        for (int j = 0; j < size[i]; j++) {
+            cout << char(list[i][j] + 'A') << " ";
+        }
+        cout << endl;
+    }
+
+    char startChar;
+    cout << "\nEnter starting location: ";
+    cin >> startChar;
+    int start = startChar - 'A';
+
+    int visited[10] = {0};
+    cout << "\nDFS (Adjacency Matrix): ";
+    DFS(n, matrix, start, visited);
+
+    cout << "\nBFS (Adjacency List): ";
+    BFS(n, list, size, start);
+
+    cout << endl;
+    return 0;
+}
