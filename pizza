@@ -1,0 +1,67 @@
+#include <iostream>
+#include <climits>
+using namespace std;
+
+const int MAX = 100;
+
+void primMST(int graph[MAX][MAX], int n) {
+    int parent[MAX];     // Stores MST structure
+    int key[MAX];        // Minimum edge weight to connect
+    bool visited[MAX];   // Track visited nodes
+
+    for (int i = 0; i < n; i++) {
+        key[i] = INT_MAX;
+        visited[i] = false;
+    }
+
+    key[0] = 0;       // Start from node 0 (pizza shop)
+    parent[0] = -1;   // Root node has no parent
+
+    for (int count = 0; count < n - 1; count++) {
+        int min = INT_MAX, u;
+
+        // Pick the minimum key vertex not yet visited
+        for (int v = 0; v < n; v++) {
+            if (!visited[v] && key[v] < min) {
+                min = key[v];
+                u = v;
+            }
+        }
+
+        visited[u] = true;
+
+        // Update key and parent for adjacent vertices
+        for (int v = 0; v < n; v++) {
+            if (graph[u][v] && !visited[v] && graph[u][v] < key[v]) {
+                parent[v] = u;
+                key[v] = graph[u][v];
+            }
+        }
+    }
+
+    // Display MST result
+    int totalTime = 0;
+    cout << "\nMinimum Spanning Tree:\n";
+    for (int i = 1; i < n; i++) {
+        cout << "Location " << parent[i] << " - " << i << " : " << graph[i][parent[i]] << " min\n";
+        totalTime += graph[i][parent[i]];
+    }
+    cout << "Total delivery time: " << totalTime << " minutes\n";
+}
+
+int main() {
+    int n;
+    cout << "Enter number of locations (including pizza shop): ";
+    cin >> n;
+
+    int graph[MAX][MAX];
+    cout << "Enter time matrix (0 if no direct path):\n";
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            cin >> graph[i][j];
+        }
+    }
+
+    primMST(graph, n);
+    return 0;
+}
