@@ -1,54 +1,37 @@
-salaries = [25000.0, 35000.0, 30000.0, 55000.0, 28000.0, 64000.0, 87000.0,44000.0]
+# Create an empty list
+salaries = []
 
-def selection_sort(arr):
-    n = len(arr)
-    for i in range(n):
+# Take 10 salaries as input
+for i in range(10):
+    a = float(input("Enter the Salary: "))
+    salaries.append(a)
+
+print("Original Salaries:", salaries)
+salaries_copy=salaries.copy()
+
+# Bubble Sort Function
+def bubble_sort(sal):
+    n = len(sal)
+    for i in range(n - 1):
+        for j in range(n - i - 1):
+            if sal[j] > sal[j + 1]:
+                sal[j], sal[j + 1] = sal[j + 1], sal[j]
+    return (sal)
+a=bubble_sort(salaries)
+print("sorted by bubble sort:",a)
+
+# Selection Sort Function
+def selection_sort(sal):
+    n = len(sal)
+    for i in range(n - 1):
         min_index = i
-        for j in range(i+1, n):
-            if arr[j] < arr[min_index]:
+        for j in range(i + 1, n):
+            if sal[j] < sal[min_index]:
                 min_index = j
-        
-        arr[i], arr[min_index] = arr[min_index], arr[i]
-    return arr
+        sal[i], sal[min_index] = sal[min_index], sal[i]
+    return (sal)
+b=selection_sort(salaries_copy)
+print("sorted by selecction sort:",b)
 
-	
-def print_top_5_salaries(arr):
-    
-    top_5 = arr[-5:] if len(arr) >= 5 else arr
-    print("Top 5 salaries  :")
-    for salary in reversed(top_5):
-        print(salary)
-        
-sorted_salaries_selection = selection_sort(salaries.copy())
-
-print("Sorted salaries :", sorted_salaries_selection)
-print_top_5_salaries(sorted_salaries_selection)
-
-print("\n")
-
-
-
-salaries = [54377.0, 44567.0, 67900.0, 24646.0, 44324.0,77000.0]
-
-def bubble_sort(arr):
-    n = len(arr)
-    for i in range(n):
-        for j in range(0, n - i - 1):
-            if arr[j] > arr[j + 1]:
-                arr[j], arr[j + 1] = arr[j + 1], arr[j]
-    return arr
-    
-def print_top_5_salaries(arr):
-    
-    top_5 = arr[-5:] if len(arr) >= 5 else arr
-    print("Top 5 salaries  :")
-    for salary in reversed(top_5):
-        print(salary)
-        
-sorted_salaries_bubble = bubble_sort(salaries.copy())
-
-print("Sorted salaries :", sorted_salaries_bubble)
-print_top_5_salaries(sorted_salaries_bubble)
-
-print("\n")
+print("top 5 higest salaries are:",a[-1:-6:-1])
 
