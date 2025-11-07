@@ -11,35 +11,40 @@ class TextEditor:
 
     def undo(self):
         if self.undo_stack:
-            self.redo_stack.append(self.document)      # Save current state for redo
-            self.document = self.undo_stack.pop()      # Revert to previous state
+            self.redo_stack.append(self.document)
+            self.document = self.undo_stack.pop()
         else:
             print("Nothing to undo.")
 
     def redo(self):
         if self.redo_stack:
-            self.undo_stack.append(self.document)      # Save current state for undo
-            self.document = self.redo_stack.pop()      # Reapply last undone state
+            self.undo_stack.append(self.document)
+            self.document = self.redo_stack.pop()
         else:
             print("Nothing to redo.")
 
     def display(self):
         print("Current Document State:", self.document)
 
-# Example usage
+
+# Interactive session
 editor = TextEditor()
 
-# Simulating user actions
-editor.make_change("Hello")
-editor.make_change("Hello, World!")
-editor.make_change("Hello, World! This is a test.")
-editor.display()
+while True:
+    print("\nOptions: [1] Make Change  [2] Undo  [3] Redo  [4] Display  [5] Exit")
+    choice = input("Enter your choice: ")
 
-editor.undo()
-editor.display()
-
-editor.undo()
-editor.display()
-
-editor.redo()
-editor.display()
+    if choice == '1':
+        new_text = input("Enter new document text: ")
+        editor.make_change(new_text)
+    elif choice == '2':
+        editor.undo()
+    elif choice == '3':
+        editor.redo()
+    elif choice == '4':
+        editor.display()
+    elif choice == '5':
+        print("Exiting editor.")
+        break
+    else:
+        print("Invalid choice. Please try again.")
