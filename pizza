@@ -1,67 +1,25 @@
-#include <iostream>
-#include <climits>
-using namespace std;
+def find(g, start, visited, count, cost, n):
+    # Base case: If all cities visited, return to start (0)
+    if count == n and g[start][0] != 0:
+        return cost + g[start][0]
+    
+    ans = 999999
+    for i in range(n):
+        if visited[i] == 0 and g[start][i] != 0:
+            visited[i] = 1
+            ans = min(ans, find(g, i, visited, count + 1, cost + g[start][i], n))
+            visited[i] = 0
+            
+    return ans
 
-const int MAX = 100;
+n = int(input("Enter the number of locations: "))
+g = []
 
-void primMST(int graph[MAX][MAX], int n) {
-    int parent[MAX];     // Stores MST structure
-    int key[MAX];        // Minimum edge weight to connect
-    bool visited[MAX];   // Track visited nodes
+for i in range(n):
+    row = list(map(int, input().split()))
+    g.append(row)
 
-    for (int i = 0; i < n; i++) {
-        key[i] = INT_MAX;
-        visited[i] = false;
-    }
+visited = [0] * n
+visited[0] = 1
 
-    key[0] = 0;       // Start from node 0 (pizza shop)
-    parent[0] = -1;   // Root node has no parent
-
-    for (int count = 0; count < n - 1; count++) {
-        int min = INT_MAX, u;
-
-        // Pick the minimum key vertex not yet visited
-        for (int v = 0; v < n; v++) {
-            if (!visited[v] && key[v] < min) {
-                min = key[v];
-                u = v;
-            }
-        }
-
-        visited[u] = true;
-
-        // Update key and parent for adjacent vertices
-        for (int v = 0; v < n; v++) {
-            if (graph[u][v] && !visited[v] && graph[u][v] < key[v]) {
-                parent[v] = u;
-                key[v] = graph[u][v];
-            }
-        }
-    }
-
-    // Display MST result
-    int totalTime = 0;
-    cout << "\nMinimum Spanning Tree:\n";
-    for (int i = 1; i < n; i++) {
-        cout << "Location " << parent[i] << " - " << i << " : " << graph[i][parent[i]] << " min\n";
-        totalTime += graph[i][parent[i]];
-    }
-    cout << "Total delivery time: " << totalTime << " minutes\n";
-}
-
-int main() {
-    int n;
-    cout << "Enter number of locations (including pizza shop): ";
-    cin >> n;
-
-    int graph[MAX][MAX];
-    cout << "Enter time matrix (0 if no direct path):\n";
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            cin >> graph[i][j];
-        }
-    }
-
-    primMST(graph, n);
-    return 0;
-}
+print("Minimum delivery time:", find(g, 0, visited, 1, 0, n))
